@@ -1,0 +1,37 @@
+{
+  "name": "https-mitm-proxy-handbook",
+  "version": "0.0.2",
+  "description": "how to write a mitm proxy base on Node.js",
+  "main": "index.js",
+  "scripts": {
+    "step1": "node example/createRootCA",
+    "step2": "node example/createCertByRootCA",
+    "step3": "node example/createHttpsServer",
+    "step4Mac": "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./example/rootCA/rootCA.crt",
+    "step4Win": "start ./example/rootCA/rootCA.crt",
+    "step5": "node example/createHttpsTunnelProxy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wuchangming/https-mitm-proxy-handbook.git"
+  },
+  "keywords": [
+    "mtim",
+    "node",
+    "handbook",
+    "https"
+  ],
+  "author": "wuchangming",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wuchangming/https-mitm-proxy-handbook/issues"
+  },
+  "engines": {
+    "node": ">= 4"
+  },
+  "homepage": "https://github.com/wuchangming/https-mitm-proxy-handbook#readme",
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "node-forge": "^0.6.43"
+  }
+}
