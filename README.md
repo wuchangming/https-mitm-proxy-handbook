@@ -2,7 +2,7 @@
 
 本项目详细讲解如何用[node.js](http://nodejs.org/)一步步实现一个**HTTPS**的[MITM](https://zh.wikipedia.org/wiki/%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB)(中间人)代理服务器。从CA证书的生成和安装到最后功能的完整实现。每一步都提供详细的[js代码实现](./example)。
 
-**本项目代码允许方式：**  
+**本项目代码运行方式：**  
 1、[下载项目zip](https://github.com/wuchangming/https-mitm-proxy-handbook/archive/master.zip)  
 2、解压zip后进入到文件夹下执行命令 `npm install` 安装依赖
 
