@@ -2,43 +2,22 @@
 
 本项目详细讲解如何用[node.js](http://nodejs.org/)一步步实现一个**HTTPS**的[MITM](https://zh.wikipedia.org/wiki/%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB)(中间人)代理服务器。从CA证书的生成和安装到最后功能的完整实现。每一步都提供详细的[js代码实现](./example)。
 
-# 第零节：前言
+**本项目代码允许方式：**  
+1、[下载项目zip](https://github.com/wuchangming/https-mitm-proxy-handbook/archive/master.zip)  
+2、解压zip后进入到文件夹下执行命令 `npm install` 安装依赖
 
-# 第一节: 生成CA根证书
-code: `example/createRootCA.js`
-```
-npm run step1
-```
+#### 第〇节：[前言](./doc/Chapter0)
 
-# 第二节：安装CA根证书
-windows
-```
-npm run step2Win
-```
+#### 第一节：[生成CA根证书](./doc/Chapter1)
 
-Mac
-```
-npm run step2Mac
-```
+#### 第二节：[安装CA根证书](./doc/Chapter2)
 
-# 第三节: 基于CA根证书生成网站域名对应的证书
-code: `example/createCertByRootCA.js`
-```
-npm run step3
-```
+#### 第三节：[基于CA根证书生成网站域名对应的证书](./doc/Chapter3)
 
-# 第四节: 一个简单的HTTPS服务
-`example/createHttpsServer.js`
-```
-npm run step4
-```
+#### 第四节：[一个简单的HTTPS服务](./doc/Chapter4)
 
+#### 第五节：[HTTP隧道](./doc/Chapter5)
 
-# 第五节：HTTP隧道
-```
-npm run step5
-```
+#### 第六节：[Hello World版的HTTPS MITM代理](./doc/Chapter6)
 
-# 第六节：Hello World版的HTTPS MITM代理
-
-# 第七节：真正的HTTPS MITM代理
+#### 第七节：[真正的HTTPS MITM代理](./doc/Chapter7)
