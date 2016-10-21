@@ -36,10 +36,10 @@ var attrs = [{
     value: 'ShengZhen'
 }, {
     name: 'organizationName',
-    value: 'node-mitmproxy'
+    value: 'https-mitm-proxy-handbook'
 }, {
     shortName: 'OU',
-    value: 'https://github.com/wuchangming/node-mitmproxy'
+    value: 'https://github.com/wuchangming/https-mitm-proxy-handbook'
 }];
 
 cert.setIssuer(caCert.subject.attributes);

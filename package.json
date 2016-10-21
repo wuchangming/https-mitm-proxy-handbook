@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "step1": "node example/createRootCA",
-    "step2": "node example/createCertByRootCA",
-    "step3": "node example/createHttpsServer",
-    "step4Mac": "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./example/rootCA/rootCA.crt",
-    "step4Win": "start ./example/rootCA/rootCA.crt",
-    "step5": "node example/createHttpsTunnelProxy"
+    "step2Mac": "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./example/rootCA/rootCA.crt",
+    "step2Win": "start ./example/rootCA/rootCA.crt",
+    "step3": "node example/createCertByRootCA",
+    "step4": "node example/createHttpsServer",
+    "step5": "node example/createHttpsTunnelProxy",
+    "step6": "node example/createHelloWorldHttpsMitmProxy",
+    "step7": "node example/createHelloWorldHttpsMitmProxy"
   },
   "repository": {
     "type": "git",
