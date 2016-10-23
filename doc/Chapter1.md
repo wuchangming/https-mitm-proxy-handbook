@@ -6,7 +6,7 @@
 
 我们都知道HTTPS的传输的内容都是加密的，假设加密的算法是不能破解的，如何才能获取到原始的未加密传输内容呢？ 基本思路很简单，让客户端信任我们建立的服务。也就是信任我们提供的证书。如下图：
 
-![](img/Chapter1/basic_principle.png)
+<img src="img/Chapter1/basic_principle.png" width="650px" />
 
 ## 如何取得客户端的信任？
 
