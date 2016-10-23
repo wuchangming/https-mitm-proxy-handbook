@@ -15,7 +15,7 @@
 **运行：**  
 为了更加方便的运行示例代码。所有的代码都以章节的形式分类的命名放在npm script中。细节可查看[package.json](../package.json)文件
 
-如：运行第一章中的生成CA根证书的代码。
+如：运行第一节中的生成CA根证书的代码。
 ```
 npm run step1
 ```
@@ -29,4 +29,4 @@ npm run step1
 ## 问题反馈
 如本文有原理上或者是代码层面的错误，再或者是任何方面的问题，都欢迎提[issue](https://github.com/wuchangming/https-mitm-proxy-handbook/issues/new)和Pull Request!
 
-### [下一章：生成CA根证书](./Chapter1.md)
+### [下一节：生成CA根证书](./Chapter1.md)
