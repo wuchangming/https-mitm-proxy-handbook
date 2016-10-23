@@ -5,6 +5,23 @@
 
 本文会更侧重于代码的实现，原理上有会做说明，但不一定足够详尽。
 
+## 如何运行项目源码
+所有用到的源码都保存在路径：[./example](./example)下。
+
+**初始化本项目代码：**  
+1、[下载项目zip](https://github.com/wuchangming/https-mitm-proxy-handbook/archive/master.zip)  
+2、解压zip后进入到文件夹下执行命令 `npm install` 安装依赖
+
+**运行：**
+为了更加方便的运行示例代码。所有的代码都以章节的形式分类的命名放在npm script中。细节可查看[package.json](../package.json)文件
+
+如：运行第一章中的生成CA根证书的代码。
+```
+npm run step1
+```
+
+**⚠️：后一章节的代码可能会依赖前一章节代码生成的证书内容**
+
 ## Node.js版本
 
 手册中使用到的js代码未对不同版本的Node.js做兼容测试。在编写代码时，我使用的Node.js版本为v4.6.0。 由于代码中使用了大量ES6的语法，在运行实例代码时，需要确认Node.js版本大于V4.4.0或者更新。
