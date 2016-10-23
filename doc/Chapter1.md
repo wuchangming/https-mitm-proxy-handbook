@@ -26,11 +26,16 @@ SSL/TLS协议是为了解决这三大风险而设计的<br>
 
 ## 生成CA根证书
 
-源码：<../example/createCertByRootCA.js>
+源码：[example/createCertByRootCA.js](../example/createCertByRootCA.js)
 
-如果你的项目已正常安装，可直接运行`npm run step1`。<br>
-这时候你的项目会多出一个文件夹example/rootCA，里面有两个生成的文件<br>
-`example/rootCA/rootCA.crt`是CA根证书<br>
-`example/rootCA/rootCA.key.pem`是CA根证书的密钥
+运行方式：
+
+```
+npm run step1
+```
+
+如果你的项目已正常安装，这时候你的项目会多出一个文件夹`example/rootCA`，里面有两个生成的文件<br>
+`rootCA.crt`是CA根证书<br>
+`rootCA.key.pem`是CA根证书的密钥
 
 在生成CA根证书的代码里我们用到了一个生成数字证书的Node.js库[forge](https://github.com/digitalbazaar/forge)。但注意的是，使用什么样的方式生成CA根证书并不影响我们最终实现一个HTTPS中间人代理，如果你对openssl生成证书的方式比较熟悉，用openssl完成这一步也是可行的。
