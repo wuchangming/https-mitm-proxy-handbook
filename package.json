@@ -11,7 +11,7 @@
     "step4": "node example/createHttpsServer",
     "step5": "node example/createHttpsTunnelProxy",
     "step6": "node example/createHelloWorldHttpsMitmProxy",
-    "step7": "node example/createHelloWorldHttpsMitmProxy"
+    "step7": "node example/createRealHttpsMitmProxy"
   },
   "repository": {
     "type": "git",

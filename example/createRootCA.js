@@ -1,3 +1,9 @@
+/**
+ * 生成根证书
+ */
+
+console.log('生成根证书\n');
+
 const forge = require('node-forge');
 const pki = forge.pki;
 const fs = require('fs');
@@ -50,9 +56,16 @@ cert.sign(keys.privateKey, forge.md.sha256.create());
 
 var certPem = pki.certificateToPem(cert);
 var keyPem = pki.privateKeyToPem(keys.privateKey);
+var certPath = path.join(__dirname, 'rootCA/rootCA.crt');
+var keyPath = path.join(__dirname, 'rootCA/rootCA.key.pem');
+
+console.log('公钥内容：\n');
 console.log(certPem);
+console.log('私钥内容：\n');
 console.log(keyPem);
+console.log(`公钥存放路径：\n ${certPath}\n`);
+console.log(`私钥存放路径：\n ${keyPath}\n`);
 
 mkdirp.sync(path.join(__dirname, 'rootCA'));
-fs.writeFileSync(path.join(__dirname, 'rootCA/rootCA.crt'), certPem);
-fs.writeFileSync(path.join(__dirname, 'rootCA/rootCA.key.pem'), keyPem);
+fs.writeFileSync(certPath, certPem);
+fs.writeFileSync(keyPath, keyPem);
