@@ -26,7 +26,7 @@ SSL/TLS协议是为了解决这三大风险而设计的<br>
 
 ## 生成CA根证书
 
-源码：[example/createCertByRootCA.js](../example/createCertByRootCA.js)
+源码：[code/createCertByRootCA.js](../code/createCertByRootCA.js)
 
 运行方式：
 
@@ -34,7 +34,7 @@ SSL/TLS协议是为了解决这三大风险而设计的<br>
 npm run step1
 ```
 
-如果你的项目已正常安装，这时候你的项目会多出一个文件夹`example/rootCA`，里面有两个生成的文件<br>
+如果你的项目已正常安装，这时候你的项目会多出一个文件夹`code/rootCA`，里面有两个生成的文件<br>
 `rootCA.crt`是CA根证书<br>
 `rootCA.key.pem`是CA根证书的密钥
 

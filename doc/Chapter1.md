@@ -12,6 +12,4 @@ HTTP中间人代理
 **HTTP中间人代理示意图：**  
 <img src="img/Chapter1/http-mitm-proxy.png" width="650px">
 
-
-
-由于HTTP的传输内容都是明文，想实现中间人代理就变得非常简单。
+由于HTTP的传输内容都是明文，想实现中间人代理就变得非常简单。  

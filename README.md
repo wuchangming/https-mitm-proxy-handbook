@@ -6,7 +6,7 @@
 
 **[MITM](https://zh.wikipedia.org/wiki/%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB)（中间人）代理**的技术手段对于软件开发者并不陌生，在实际开发和测试中经常会使用。调试接口、查看HTTP请求与响应时使用的http抓包调试工具如：[Fiddler](http://www.telerik.com/fiddler)、 [Charles](https://www.charlesproxy.com/)，就是基于该原理实现的。  
 
-本文会更侧重于代码的实现，每一步都提供`详细的`、`可运行的`[js代码实现](./example)。
+本文会更侧重于代码的实现，每一步都提供`详细的`、`可运行的`[js代码实现](./code)。
 
 #### 问题反馈
 

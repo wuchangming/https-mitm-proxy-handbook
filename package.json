@@ -4,14 +4,14 @@
   "description": "how to write a mitm proxy base on Node.js",
   "main": "index.js",
   "scripts": {
-    "step1": "node example/createRootCA",
-    "step2Mac": "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./example/rootCA/rootCA.crt",
-    "step2Win": "start ./example/rootCA/rootCA.crt",
-    "step3": "node example/createCertByRootCA",
-    "step4": "node example/createHttpsServer",
-    "step5": "node example/createHttpsTunnelProxy",
-    "step6": "node example/createHelloWorldHttpsMitmProxy",
-    "step7": "node example/createRealHttpsMitmProxy"
+    "step1": "node code/chapter1/httpMitmProxy.js",
+    "step2Mac": "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./code/rootCA/rootCA.crt",
+    "step2Win": "start ./code/rootCA/rootCA.crt",
+    "step3": "node code/createCertByRootCA",
+    "step4": "node code/createHttpsServer",
+    "step5": "node code/createHttpsTunnelProxy",
+    "step6": "node code/createHelloWorldHttpsMitmProxy",
+    "step7": "node code/createRealHttpsMitmProxy"
   },
   "repository": {
     "type": "git",
