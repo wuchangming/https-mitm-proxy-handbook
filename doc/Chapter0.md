@@ -21,11 +21,11 @@
 2、解压zip后进入到文件夹下执行命令 `npm install` 安装依赖包。
 
 **运行：**  
-为了更加方便的运行示例代码。所有的代码都以章节的形式分类的命名放在npm script中。细节可查看[package.json](../package.json)文件
+为了更加方便的运行示例代码。所有的代码都放在npm script中。细节可查看[package.json](../package.json)文件
 
-如：运行第一节中的生成CA根证书的代码。
+如：运行启动一个http服务的命令。
 ```
-npm run step1
+npm run httpMitmProxy
 ```
 **⚠️后一章节的代码可能会依赖前一章节代码生成的证书文件**
 
