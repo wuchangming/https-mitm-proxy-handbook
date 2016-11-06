@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "httpMitmProxy": "node code/chapter1/httpMitmProxy.js",
+    "httpMitmProxyModifyRes":"node code/chapter1/httpMitmProxyModifyRes.js",
     "step2Mac": "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ./code/rootCA/rootCA.crt",
     "step2Win": "start ./code/rootCA/rootCA.crt",
     "step3": "node code/createCertByRootCA",
@@ -34,6 +35,7 @@
   "homepage": "https://github.com/wuchangming/https-mitm-proxy-handbook#readme",
   "dependencies": {
     "mkdirp": "^0.5.1",
-    "node-forge": "^0.6.43"
+    "node-forge": "^0.6.43",
+    "through2": "^2.0.1"
   }
 }

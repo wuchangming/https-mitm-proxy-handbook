@@ -13,7 +13,7 @@
 如本文有原理上或者是代码层面的错误，再或者是任何方面的问题，都欢迎[提问](https://github.com/wuchangming/https-mitm-proxy-handbook/issues/new)或 Pull Request!
 
 
-#### 第〇节：[概要和思路分析](./doc/Chapter0.md)
+#### 第〇节：[思路分析](./doc/Chapter0.md)
 
 #### 第一节：[HTTP中间人代理](./doc/Chapter1.md)
 

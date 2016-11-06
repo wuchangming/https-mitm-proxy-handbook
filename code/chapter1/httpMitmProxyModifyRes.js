@@ -1,9 +1,10 @@
 'use strict'
 /**
- *  HTTP MITM 代理
+ *  通过HTTP MITM 代理修改HTML内容
  */
 const http = require('http');
 const url = require('url');
+const through = require('through2');
 const net = require('net');
 
 let httpMitmProxy = new http.Server();
@@ -27,6 +28,9 @@ httpMitmProxy.on('request', (req, res) => {
         headers: req.headers
     };
 
+    // 为了方便起见，直接去掉客户端请求所支持的压缩方式
+    delete options.headers['accept-encoding'];
+
     console.log(`请求方式：${options.method}，请求地址：${options.protocol}//${options.hostname}:${options.port}${options.path}`);
 
     // 第二步：根据客户端请求，向真正的目标服务器发起请求。
@@ -40,8 +44,22 @@ httpMitmProxy.on('request', (req, res) => {
         // 设置客户端响应状态码
         res.writeHead(realRes.statusCode);
 
-        // 通过pipe的方式把真正的服务器响应内容转发给客户端
-        realRes.pipe(res);
+        // 通过响应的http头部判断响应内容是否为html
+        if (/html/i.test(realRes.headers['content-type'])) {
+            realRes.pipe(through(function(chunk, enc, callback) {
+                let chunkString = chunk.toString();
+                // 给html注入的alert的js代码
+                let script = '<script>alert("Hello https-mitm-proxy-handbook!")</script>'
+                chunkString = chunkString.replace(/(<\/head>)/ig, function (match) {
+                    return  script + match;
+                });
+                this.push(chunkString);
+                callback();
+            })).pipe(res);
+        } else {
+            realRes.pipe(res);
+        }
+
     });
 
     // 通过pipe的方式把客户端请求内容转发给目标服务器
