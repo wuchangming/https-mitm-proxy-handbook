@@ -17,6 +17,6 @@
 
 #### 第一节：[HTTP中间人代理实现](./doc/Chapter1.md)
 
-#### 第二节：[HTTP代理如何代理HTTPS请求](./doc/Chapter2.md)
+#### 第二节：[如何代理HTTPS请求](./doc/Chapter2.md)
 
 #### TODO
