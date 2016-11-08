@@ -23,7 +23,7 @@
 **运行：**  
 为了更加方便的运行示例代码。所有的代码都放在npm script中。细节可查看[package.json](../package.json)文件
 
-如：运行启动一个http服务的命令。
+如：运行启动一个http代理服务的命令。
 ```
 npm run httpMitmProxy
 ```
@@ -35,4 +35,4 @@ Node.js版本
 本文中使用到的js代码未对不同版本的Node.js做兼容测试。在编写代码时，我使用的Node.js版本为v4.6.0。 由于代码中使用了大量ES6的语法，在运行实例代码时，需要确保Node.js版本大于V4.4.0或者更新。
 
 
-#### [第一节：HTTP中间人代理](./Chapter1.md)
+#### [第一节：HTTP中间人代理实现](./Chapter1.md)

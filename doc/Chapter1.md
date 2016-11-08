@@ -191,7 +191,7 @@ npm script运行方式
 ```
 npm run httpMitmProxyModifyRes
 ```
-相比第一个代理只实现了单纯的转发，这一次的实现的代理对客户端请求和服务器响应都做了控制。  
+相比第一个代理只实现了单纯的转发，这一次的实现的代理对客户端请求和服务器响应都做了篡改。  
 
 1、在处理客户端请求时，直接去掉了`accept-encoding`的http头部。  
 2、修改了服务器响应内容，给所有html注入了一段alert的js代码`<script>alert("Hello https-mitm-proxy-handbook!")</script>`。为了方便的修改pipe流的内容，这里用到了[through2](https://github.com/rvagg/through2)。  
@@ -202,4 +202,6 @@ npm run httpMitmProxyModifyRes
 
 关于HTTP的安全问题
 -------
-从上面的http代理的实现可以看到，单纯的http协议是没有任何安全保障。想想平时身边的黑Wi-Fi、黑心运营商，想窥探通过http传输的内容是多么轻而易举的一件事。
+从上面的http代理的实现可以看到，单纯的http协议是没有任何安全保障。想想平时身边的黑Wi-Fi、黑心运营商，想窥探或篡改通过http传输的内容是多么轻而易举的一件事。
+
+#### [第二节：如何代理HTTPS请求](./Chapter2.md)
