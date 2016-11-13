@@ -88,5 +88,6 @@ httpTunnel.on('connect', (req, cltSocket, head) => {
 npm script运行方式
 ```
 npm run httpTunnelHttps
+```
 
 设置完代理后，现在可以用浏览器尝试打开https的链接了。
