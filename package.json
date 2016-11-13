@@ -4,8 +4,9 @@
   "description": "how to write a mitm proxy base on Node.js",
   "main": "index.js",
   "scripts": {
+    "httpProxy": "node code/chapter1/httpProxy.js",
     "httpMitmProxy": "node code/chapter1/httpMitmProxy.js",
-    "httpMitmProxyModifyRes":"node code/chapter1/httpMitmProxyModifyRes.js"
+    "httpTunnelHttps": "node code/chapter2/httpTunnelHttps.js"
   },
   "repository": {
     "type": "git",

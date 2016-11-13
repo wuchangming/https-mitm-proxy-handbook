@@ -25,7 +25,7 @@
 
 如：运行启动一个http代理服务的命令。
 ```
-npm run httpMitmProxy
+npm run httpProxy
 ```
 **⚠️后一章节的代码可能会依赖前一章节代码生成的证书文件**
 

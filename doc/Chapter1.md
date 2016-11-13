@@ -180,11 +180,11 @@ httpMitmProxy.on('request', (req, res) => {
     })
 })
 ```
-完整源码：[../code/chapter1/httpMitmProxyModifyRes.js](../code/chapter1/httpMitmProxyModifyRes.js)
+完整源码：[../code/chapter1/httpMitmProxy.js](../code/chapter1/httpMitmProxy.js)
 
 npm script运行方式
 ```
-npm run httpMitmProxyModifyRes
+npm run httpMitmProxy
 ```
 相比第一个代理只实现了单纯的转发，这一次的实现的代理对客户端请求和服务器响应都做了篡改。  
 
