@@ -19,4 +19,6 @@
 
 #### 第二节：[如何代理HTTPS请求](./doc/Chapter2.md)
 
+#### 第三节：[HTTPS数字证书和数字证书链](./doc/Chapter3.md)
+
 #### TODO

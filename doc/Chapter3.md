@@ -1,41 +1,97 @@
-# 第2节：生成CA根证书
+# 第三节：HTTPS数字证书和数字证书链
 
-本章节涉及到的知识点：数字证书、数字证书链
+## 什么是数字证书和数字证书链
+上一节说到SSL/TLS协议是为了解决三大风险而设计，第三点就是防止身份被冒充，防止身份被冒充的核心关键就是数字证书和数字证书链。下面我就用“大白话”简单说下数字证书和数字证书链。  
 
-## 思路
+为了保证信息在传输中的安全和双方的身份不被冒充，HTTPS在建立安全链接阶段使用了公钥、私钥两把“钥匙”——**非对称加密**。非对称意思是：公钥加密的内容，只有私钥才能解密。私钥加密的内容，只有公钥才能解密。公钥是公开的，私钥保存在服务器端。
 
-我们都知道HTTPS的传输的内容都是加密的，假设加密的算法是不能破解的，如何才能获取到原始的未加密传输内容呢？ 基本思路很简单，让客户端信任我们建立的服务。也就是信任我们提供的证书。如下图：
+<img src="img/Chapter3/clientTalkToHttpsServer.png" width="650px">  
 
-<img src="img/Chapter1/basic_principle.png" width="650px" />
+由上图可看出只有拥有了“私钥”的服务器才能解密出“公钥”加密的对话内容。这样就保证了如果公钥**确实**是服务器提供的公钥，那么这次会话的内容只有服务器能解密，确保了服务器的身份。现在问题来了，因为公私钥的生成算法是开源的，每个服务器都能提供并生成自己的公私钥，客户端如何确认拿到的公钥不是伪造的。  
 
-## 如何取得客户端的信任？
+这里引出了另外一个安全机制，就是数字证书链。证书链的核心是**证书中心**(certificate authority，简称CA)，合法CA的公钥是**预存**在操作系统和浏览器里的，只有通过了CA认证了的公钥才被认为是可信的公钥。认证的原理很简单，依然是公私钥原理。CA拿自己的私钥去给需要认证的公钥签名，生成一个“数字证书”。数字证书是包含了CA的签名，服务器自身公钥等等信息的集合体。浏览器拿着CA的公钥去验证该签名。只有被CA公钥验证通过的证书才是可信任的证书，这样整个安全证书链信任系统就构成了。
 
-既然需要伪造服务器，怎么能让浏览器客户端相信伪造的服务是"真"的服务器。如果您已经了解HTTPS的数字证书和数字证书链，您可以直接跳过该段落。
+**客户端验证服务器证书**  
+<img src="img/Chapter3/httpsCertWorkflow.png" width="650px">  
 
-首先说说HTTP**S**中的**S**代表什么?<br>
-HTTP协议是互联网应用最广泛的一种网络协议，传输的内容是以明文方式进行。HTTP本身是没有任何安全保障，HTTPS的主要思想就是在不安全的网络上创建一安全信道，这里的**S**是指：SSL/TLS就是这一层安全的通道。
+## 如何取得“信任”
+回到最初的思路分析：**建立一个可以同时与客户端和服务端进行通信的网络服务。**
 
-SSL/TLS协议是为了解决这三大风险而设计的<br>
-（1） 所有信息都是加密传播，第三方无法窃听。<br>
-（2） 具有校验机制，一旦被篡改，通信双方会立刻发现。<br>
-（3） 配备身份证书，防止身份被冒充。<br>
-(`更多细节可参考阮一峰的`[《SSL/TLS协议运行机制的概述》](http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html))
+现在需要解决的是如何得到客户端的信任。经过上面的分析，只要自定义的CA证书得到了客户端的信任，我就能用CA证书签发各种“伪造”的服务器证书。简单说就是让系统安装上我们自定义的CA证书。
 
-根据我们开始的思路，我们要需要解决的是上述SSL/TLS协议设计的第三点。也就是身份冒充----伪造一个让客户端信任的服务器。 HTTPS的信任体系即证书链，依赖于CA（certificate authority，数字证书认证机构）的认证。既然我们是伪造的服务器那我们就伪造一个CA的数字证书认机构。<br>
-（数字证书和证书链的原理参考阮一峰的[数字签名是什么？](http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html)
+## 如何生成CA根证书
+由于生成证书的方法是开源的，这里用到的是一个Node.js的库[forge](https://github.com/digitalbazaar/forge)。但需要注意的是，使用什么样的方式生成CA根证书并不影响我们最终实现一个HTTPS中间人代理，如果你对openssl生成证书的方式比较熟悉，用openssl完成这一步也是可行的。
 
-## 生成CA根证书
+**生产CA证书代码核心部分：**
+```javascript
+const forge = require('node-forge');
+const pki = forge.pki;
+const fs = require('fs');
+const path = require('path');
+const mkdirp = require('mkdirp');
 
-源码：[code/createCertByRootCA.js](../code/createCertByRootCA.js)
+var keys = pki.rsa.generateKeyPair(1024);
+var cert = pki.createCertificate();
+cert.publicKey = keys.publicKey;
+cert.serialNumber = (new Date()).getTime() + '';
 
-运行方式：
+// 设置CA证书有效期
+cert.validity.notBefore = new Date();
+cert.validity.notBefore.setFullYear(cert.validity.notBefore.getFullYear() - 5);
+cert.validity.notAfter = new Date();
+cert.validity.notAfter.setFullYear(cert.validity.notAfter.getFullYear() + 20);
+var attrs = [{
+    name: 'commonName',
+    value: 'https-mitm-proxy-handbook'
+}, {
+    name: 'countryName',
+    value: 'CN'
+}, {
+    shortName: 'ST',
+    value: 'GuangDong'
+}, {
+    name: 'localityName',
+    value: 'ShenZhen'
+}, {
+    name: 'organizationName',
+    value: 'https-mitm-proxy-handbook'
+}, {
+    shortName: 'OU',
+    value: 'https://github.com/wuchangming/https-mitm-proxy-handbook'
+}];
+cert.setSubject(attrs);
+cert.setIssuer(attrs);
+cert.setExtensions([{
+    name: 'basicConstraints',
+    critical: true,
+    cA: true
+}, {
+    name: 'keyUsage',
+    critical: true,
+    keyCertSign: true
+}, {
+    name: 'subjectKeyIdentifier'
+}]);
 
+// 用自己的私钥给CA根证书签名
+cert.sign(keys.privateKey, forge.md.sha256.create());
+
+var certPem = pki.certificateToPem(cert);
+var keyPem = pki.privateKeyToPem(keys.privateKey);
+
+console.log('公钥内容：\n');
+console.log(certPem);
+console.log('私钥内容：\n');
+console.log(keyPem);
 ```
-npm run step1
+
+完整源码：[../code/chapter3/createRootCA.js](../code/chapter3/createRootCA.js)
+
+npm script运行方式
+```
+npm run createRootCA
 ```
 
-如果你的项目已正常安装，这时候你的项目会多出一个文件夹`code/rootCA`，里面有两个生成的文件<br>
-`rootCA.crt`是CA根证书<br>
-`rootCA.key.pem`是CA根证书的密钥
-
-在生成CA根证书的代码里我们用到了一个生成数字证书的Node.js库[forge](https://github.com/digitalbazaar/forge)。但注意的是，使用什么样的方式生成CA根证书并不影响我们最终实现一个HTTPS中间人代理，如果你对openssl生成证书的方式比较熟悉，用openssl完成这一步也是可行的。
+执行完`npm run createRootCA`后，CA根证书的`公私钥`会生成到项目根路径的`rootCA文件夹`下：  
+> 公钥文件：rootCA/rootCA.crt  
+> 私钥文件：rootCA/rootCA.key.pem

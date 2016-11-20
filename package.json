@@ -6,7 +6,8 @@
   "scripts": {
     "httpProxy": "node code/chapter1/httpProxy.js",
     "httpMitmProxy": "node code/chapter1/httpMitmProxy.js",
-    "httpTunnelHttps": "node code/chapter2/httpTunnelHttps.js"
+    "httpTunnelHttps": "node code/chapter2/httpTunnelHttps.js",
+    "createRootCA": "node code/chapter3/createRootCA.js"
   },
   "repository": {
     "type": "git",

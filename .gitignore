@@ -3,8 +3,8 @@ logs
 *.log
 npm-debug.log*
 
-code/cert
-code/rootCA
+/cert
+/rootCA
 
 # Runtime data
 pids
