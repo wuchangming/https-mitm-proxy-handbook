@@ -8,7 +8,8 @@
     "httpMitmProxy": "node code/chapter1/httpMitmProxy.js",
     "httpTunnelHttps": "node code/chapter2/httpTunnelHttps.js",
     "createRootCA": "node code/chapter3/createRootCA.js",
-    "installCAForMac": "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain rootCA/rootCA.crt"
+    "installCAForMac": "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain rootCA/rootCA.crt",
+    "createCertByRootCA": "node code/chapter3/createCertByRootCA.js"
   },
   "repository": {
     "type": "git",

@@ -97,7 +97,9 @@ npm run createRootCA
 > 私钥文件：rootCA/rootCA.key.pem
 
 ## 安装CA根证书
-⚠️注意：必须要按照上面步骤先生成CA证书相关文件  
+⚠️注意：
+> 1.必须要按照上面步骤先生成CA证书相关文件  
+> 2.每一次生成的证书和密钥都是独一无二的。
 
 ### Windows
 
@@ -119,7 +121,7 @@ npm run createRootCA
 <img src="img/Chapter3/winCa.png" width="550px" >  
 
 ### Mac
-项目跟路径下执行下面命令
+项目根路径下执行下面命令
 > sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain rootCA/rootCA.crt
 
 也可以直接运行npm script
@@ -132,3 +134,112 @@ npm run installCAForMac
 输入命令`open /Library/Keychains/System.keychain` 可查看安装情况如下图  
 
 <img src="img/Chapter3/keychain_access.png" width="550px" >  
+
+## 根据CA根证书生成对应不同域名的子证书
+
+**生成一个伪造的github的证书**
+```javascript
+const forge = require('node-forge');
+const pki = forge.pki;
+const fs = require('fs');
+const path = require('path');
+const mkdirp = require('mkdirp');
+
+// CNanme
+var domain = 'github.com';
+
+var caCertPem = fs.readFileSync(path.join(__dirname, '../../rootCA/rootCA.crt'));
+var caKeyPem = fs.readFileSync(path.join(__dirname, '../../rootCA/rootCA.key.pem'));
+var caCert = forge.pki.certificateFromPem(caCertPem);
+var caKey = forge.pki.privateKeyFromPem(caKeyPem);
+
+var keys = pki.rsa.generateKeyPair(1024);
+var cert = pki.createCertificate();
+cert.publicKey = keys.publicKey;
+
+cert.serialNumber = (new Date()).getTime() + '';
+cert.validity.notBefore = new Date();
+cert.validity.notBefore.setFullYear(cert.validity.notBefore.getFullYear() - 1);
+cert.validity.notAfter = new Date();
+cert.validity.notAfter.setFullYear(cert.validity.notAfter.getFullYear() + 1);
+
+var attrs = [{
+    name: 'commonName',
+    value: domain
+}, {
+    name: 'countryName',
+    value: 'CN'
+}, {
+    shortName: 'ST',
+    value: 'GuangDong'
+}, {
+    name: 'localityName',
+    value: 'ShengZhen'
+}, {
+    name: 'organizationName',
+    value: 'https-mitm-proxy-handbook'
+}, {
+    shortName: 'OU',
+    value: 'https://github.com/wuchangming/https-mitm-proxy-handbook'
+}];
+
+cert.setIssuer(caCert.subject.attributes);
+cert.setSubject(attrs);
+
+cert.setExtensions([{
+    name: 'basicConstraints',
+    critical: true,
+    cA: false
+}, {
+    name: 'keyUsage',
+    critical: true,
+    digitalSignature: true,
+    contentCommitment: true,
+    keyEncipherment: true,
+    dataEncipherment: true,
+    keyAgreement: true,
+    keyCertSign: true,
+    cRLSign: true,
+    encipherOnly: true,
+    decipherOnly: true
+}, {
+    name: 'subjectKeyIdentifier'
+}, {
+    name: 'extKeyUsage',
+    serverAuth: true,
+    clientAuth: true,
+    codeSigning: true,
+    emailProtection: true,
+    timeStamping: true
+}, {
+    name: 'authorityKeyIdentifier'
+}]);
+cert.sign(caKey, forge.md.sha256.create());
+
+var certPem = pki.certificateToPem(cert);
+var keyPem = pki.privateKeyToPem(keys.privateKey);
+console.log(certPem);
+console.log(keyPem);
+```
+
+npm script运行方式
+```
+npm run createCertByRootCA
+```
+执行完`npm run createCertByRootCA`后，CA根证书的`公私钥`会生成到项目根路径的`cert文件夹`下：  
+> 公钥文件：cert/my.crt  
+> 私钥文件：cert/my.key.pem
+
+通过证书链的原理可以了解，获取CA认证的方法就是用CA证书的私钥给需要认证的子证书签名。上面的代码即是根据这个原理伪造了一个`github.com`域名的子证书。  
+
+证书中的Common Name字段表明了该证书对应的域名  
+<img src="img/Chapter3/Common_Name.png" width="350px">  
+
+如果需要代表多个域名时需要用到扩展字段Subject Alternative Name  
+<img src="img/Chapter3/Subject_Alternative_Name.png" width="350px">  
+
+另外和CA根证书最大的不同是，该子证书是用CA根证书的私钥签名，而CA根证书是用自己的私钥自签名。这也从代码的角度认识到了证书链的原理  
+```javascript
+// 用CA根证书私钥签名
+cert.sign(caKey, forge.md.sha256.create());
+```
