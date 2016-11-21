@@ -116,7 +116,7 @@ npm run createRootCA
 ###### 检查证书安装
 命令行输入`certmgr.msc`，如下图可以看到新安装的证书
 
-<img src="img/Chapter3/winCA.png" width="550px" >  
+<img src="img/Chapter3/winCa.png" width="550px" >  
 
 ### Mac
 项目跟路径下执行下面命令
