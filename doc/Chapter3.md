@@ -22,7 +22,7 @@
 ## 如何生成CA根证书
 由于生成证书的方法是开源的，这里用到的是一个Node.js的库[forge](https://github.com/digitalbazaar/forge)。但需要注意的是，使用什么样的方式生成CA根证书并不影响我们最终实现一个HTTPS中间人代理，如果你对openssl生成证书的方式比较熟悉，用openssl完成这一步也是可行的。
 
-**生产CA证书代码核心部分：**
+**生成CA证书代码核心部分：**
 ```javascript
 const forge = require('node-forge');
 const pki = forge.pki;
@@ -95,3 +95,40 @@ npm run createRootCA
 执行完`npm run createRootCA`后，CA根证书的`公私钥`会生成到项目根路径的`rootCA文件夹`下：  
 > 公钥文件：rootCA/rootCA.crt  
 > 私钥文件：rootCA/rootCA.key.pem
+
+## 安装CA根证书
+⚠️注意：必须要按照上面步骤先生成CA证书相关文件  
+
+### Windows
+
+###### 第一步：  
+首先双击打开证书文件`rootCA/rootCA.crt`
+
+###### 第二步：
+<img src="img/Chapter3/installCAForWinStep1.png" width="550px" >  
+
+###### 第三步：
+<img src="img/Chapter3/installCAForWinStep2.png" width="550px" >  
+
+###### 第四步：
+<img src="img/Chapter3/installCAForWinStep3.png" width="550px" >  
+
+###### 检查证书安装
+命令行输入`certmgr.msc`，如下图可以看到新安装的证书
+
+<img src="img/Chapter3/winCA.png" width="550px" >  
+
+### Mac
+项目跟路径下执行下面命令
+> sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain rootCA/rootCA.crt
+
+也可以直接运行npm script
+```
+npm run installCAForMac
+```
+输入用户密码后即可安装成功。  
+
+###### 检查证书安装
+输入命令`open /Library/Keychains/System.keychain` 可查看安装情况如下图  
+
+<img src="img/Chapter3/keychain_access.png" width="550px" >  
