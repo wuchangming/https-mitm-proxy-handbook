@@ -1,7 +1,7 @@
 # 第四节：一个简易的HTTPS代理
 结合前3节的内容，下面实现一个简易的HTTPS代理。  
 
-在第二节了解了一个HTTPS请求的代理过程，在建立链接的第一步是一个HTTP CONNECT请求，在这一步可以获得客户端请求目标网站的**域名**（这么说不是很准确，具体可看看[SNI](https://zh.wikipedia.org/zh-hans/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%90%8D%E7%A7%B0%E6%8C%87%E7%A4%BA)）。用预先安装好的CA证书和密钥生成对应**域名**的子证书，这个过程其实就是一个HTTPS代理的核心步骤。
+在第二节了解了一个HTTPS请求的代理过程，在建立链接的第一步是一个HTTP CONNECT请求，在这一步可以获得客户端请求目标网站的**域名**（这么说不是很准确，具体可看看[SNI](https://zh.wikipedia.org/zh-hans/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%90%8D%E7%A7%B0%E6%8C%87%E7%A4%BA)）。用预先安装好的CA证书和密钥，生成对应**域名**的子证书。这个过程其实就是一个HTTPS代理的核心步骤。
 ## 获取https所请求的域名
 ```javascript
 
@@ -196,3 +196,6 @@ npm script运行方式
 ```
 npm run simpleHttpsProxy
 ```
+
+这样一个简易的HTTPS代理就完成了。  
+<img src="img/Chapter4/fakeWebSite.png" width="350px">  
