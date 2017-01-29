@@ -1,62 +1,36 @@
-# 第四节：一个简易的HTTPS代理
-结合前3节的内容，下面实现一个简易的HTTPS代理。  
-
-在第二节了解了一个HTTPS请求的代理过程，在建立链接的第一步是一个HTTP CONNECT请求，在这一步可以获得客户端请求目标网站的**域名**（这么说不是很准确，具体可看看[SNI](https://zh.wikipedia.org/zh-hans/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%90%8D%E7%A7%B0%E6%8C%87%E7%A4%BA)）。用预先安装好的CA证书和密钥生成对应**域名**的子证书，这个过程其实就是一个HTTPS代理的核心步骤。
-## 获取https所请求的域名
-```javascript
-
-const http = require('http');
+const path = require('path');
+const forge = require('node-forge');
+const pki = forge.pki;
+const tls = require('tls');
 const url = require('url');
-const net = require('net');
-const createFakeHttpsWebSite = require('./createFakeHttpsWebSite')
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
 
-let httpTunnel = new http.Server();
-// 启动端口
-let port = 6789;
 
-httpTunnel.listen(port, () => {
-    console.log(`简易HTTPS中间人代理启动成功，端口：${port}`);
-});
 
-httpTunnel.on('error', (e) => {
-    if (e.code == 'EADDRINUSE') {
-        console.error('HTTP中间人代理启动失败！！');
-        console.error(`端口：${port}，已被占用。`);
-    } else {
-        console.error(e);
-    }
-});
+const caCertPath = path.join(__dirname, '../../rootCA/rootCA.crt');
+const caKeyPath = path.join(__dirname, '../../rootCA/rootCA.key.pem');
 
-// https的请求通过http隧道方式转发
-httpTunnel.on('connect', (req, cltSocket, head) => {
-  // connect to an origin server
-  var srvUrl = url.parse(`http://${req.url}`);
+try {
+    fs.accessSync(caCertPath, fs.F_OK);
+    fs.accessSync(caKeyPath, fs.F_OK);
+} catch (e) {
+    console.log(`在路径下：${caCertPath} 未找到CA根证书`, e);
+    process.exit(1);
+}
 
-  console.log(`CONNECT ${srvUrl.hostname}:${srvUrl.port}`);
+fs.readFileSync(caCertPath);
+fs.readFileSync(caKeyPath);
 
-  // 根据域名生成对应的https服务
-  createFakeHttpsWebSite(srvUrl.hostname, (port) => {
-      var srvSocket = net.connect(port, '127.0.0.1', () => {
+const caCertPem = fs.readFileSync(caCertPath);
+const caKeyPem = fs.readFileSync(caKeyPath);
+const caCert = forge.pki.certificateFromPem(caCertPem);
+const caKey = forge.pki.privateKeyFromPem(caKeyPem);
 
-        cltSocket.write('HTTP/1.1 200 Connection Established\r\n' +
-                        'Proxy-agent: MITM-proxy\r\n' +
-                        '\r\n');
-        srvSocket.write(head);
-        srvSocket.pipe(cltSocket);
-        cltSocket.pipe(srvSocket);
-      });
-      srvSocket.on('error', (e) => {
-          console.error(e);
-      });
-  })
-});
-
-```
-
-## 伪造一个https服务站点
-```javascript
 /**
- * 根据域名生成一个伪造的https服务
+ * 根据CA证书生成一个伪造的https服务
+ * @param  {[type]} ca         [description]
  * @param  {[type]} domain     [description]
  * @param  {[type]} successFun [description]
  * @return {[type]}            [description]
@@ -188,11 +162,5 @@ function createFakeCertificateByDomain(caKey, caCert, domain) {
         cert: cert
     };
 }
-```  
 
-完整源码：[../code/chapter4](../code/chapter4)
-
-npm script运行方式
-```
-npm run simpleHttpsProxy
-```
+module.exports = createFakeHttpsWebSite

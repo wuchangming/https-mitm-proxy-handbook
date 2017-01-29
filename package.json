@@ -1,6 +1,6 @@
 {
   "name": "https-mitm-proxy-handbook",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "how to write a mitm proxy base on Node.js",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,8 @@
     "httpTunnelHttps": "node code/chapter2/httpTunnelHttps.js",
     "createRootCA": "node code/chapter3/createRootCA.js",
     "installCAForMac": "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain rootCA/rootCA.crt",
-    "createCertByRootCA": "node code/chapter3/createCertByRootCA.js"
+    "createCertByRootCA": "node code/chapter3/createCertByRootCA.js",
+    "simpleHttpsProxy": "node code/chapter4/simpleHttpsProxy"
   },
   "repository": {
     "type": "git",
