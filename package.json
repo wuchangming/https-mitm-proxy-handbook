@@ -1,6 +1,6 @@
 {
   "name": "https-mitm-proxy-handbook",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "how to write a mitm proxy base on Node.js",
   "main": "index.js",
   "scripts": {
